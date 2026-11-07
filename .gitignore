@@ -1,0 +1,28 @@
+# Docker / Datos locales
+*.log
+*.pid
+.env
+.DS_Store
+./ip.txt
+
+# Go
+golang-middleware/server
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+
+# Asterisk & Audios
+*.mp3
+*.m4a
+*~
+unprocessed.wav
+
+# JUust testing audios here
+asterisk/sounds/*
+!asterisk/sounds/bienvenida.wav
+dev/asterisk/sounds/*
+!dev/asterisk/sounds/bienvenida.wav
