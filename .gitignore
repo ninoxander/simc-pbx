@@ -25,4 +25,9 @@ unprocessed.wav
 asterisk/sounds/*
 !asterisk/sounds/bienvenida.wav
 dev/asterisk/sounds/*
-!dev/asterisk/sounds/bienvenida.wav
+!dev/asterisk/sounds/bienvenida.wav.env
+__pycache__/
+*.pyc
+venv/
+node_modules/
+dist/
