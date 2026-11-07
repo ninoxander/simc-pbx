@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   # Asterisk
   asterisk:
@@ -8,6 +10,8 @@ services:
     volumes:
       - ./asterisk/config:/etc/asterisk
       - ./asterisk/sounds:/var/lib/asterisk/sounds/custom
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     deploy:
       resources:
         limits:
@@ -60,3 +64,15 @@ services:
           memory: 2048M
         reservations:
           memory: 512M
+
+  # Procesos de STT
+  stt_service:
+    build:
+      context: ./stt-service
+      dockerfile: Dockerfile
+    container_name: stt_service
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./asterisk/sounds:/app/sounds
