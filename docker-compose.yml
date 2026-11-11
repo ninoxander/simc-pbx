@@ -1,5 +1,9 @@
 version: '3.8'
 
+networks:
+  pbx_network:
+    driver: bridge
+
 services:
   # Asterisk
   asterisk:
@@ -23,6 +27,8 @@ services:
       - "5060:5060/udp"
       - "5060:5060/tcp"
       - "10000-10020:10000-10020/udp"
+    networks:
+      - pbx_network
 
   # Golang
   security-middleware:
@@ -47,6 +53,8 @@ services:
           memory: 64M
     depends_on:
       - python-core
+    networks:
+      - pbx_network
 
   # Procesamiento e IA - Python
   python-core:
@@ -95,3 +103,16 @@ services:
       - /app/node_modules
     depends_on:
       - stt_service
+  
+  # Redis
+  redis_service:
+    image: redis:7-alpine
+    container_name: redis_service
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis_data:/data
+    networks:
+      - pbx_network

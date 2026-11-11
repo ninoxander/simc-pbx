@@ -31,3 +31,4 @@ __pycache__/
 venv/
 node_modules/
 dist/
+redis_data/

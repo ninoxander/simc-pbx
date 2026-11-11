@@ -1,17 +1,18 @@
-FROM golang:1.22-bookworm AS builder
+FROM golang:alpine AS builder
 WORKDIR /app
 
-COPY go.mod ./
+ENV GOTOOLCHAIN=auto
+
+COPY go.mod go.sum* ./
 RUN go mod download || true
 
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -o server .
+RUN go mod tidy
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/server .
 
-FROM debian:bookworm-slim
-WORKDIR /app
-
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+WORKDIR /root/
 COPY --from=builder /app/server .
-
-EXPOSE 8080
+EXPOSE 8080 4573
 CMD ["./server"]
